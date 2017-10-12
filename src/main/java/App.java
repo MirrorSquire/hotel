@@ -7,10 +7,10 @@ public class App {
 
     public static void main(String[] args) {
 
-        Customer customer = BookingProcess.login();
-
-
-
-
+        while(true) {
+            Customer customer = BookingProcess.login();
+            BookingProcess.bookRoom(customer);
+            break;
+        }
     }
 }

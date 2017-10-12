@@ -4,6 +4,7 @@ import customer.Customer;
 import customer.CustomerList;
 import rooms.DeluxeRoom;
 import rooms.PenthouseRoom;
+import rooms.Room;
 import rooms.StandardRoom;
 
 import java.util.Scanner;
@@ -25,7 +26,6 @@ public class BookingProcess {
         Customer currentCustomer;
         while (true) {
 
-            currentCustomer = null;
             System.out.println("If you are a returning customer, please enter your ID number. Otherwise, please type \"" + NEW_KEYWORD+"\" to create an account");
 
             String input = scanner.nextLine();
@@ -60,6 +60,21 @@ public class BookingProcess {
     }
 
     public static void bookRoom(Customer customer) {
+
+        System.out.println("Would you like a [S]tandard room, a [D]eluxe room, or a [P]enthouse room?");
+
+        String room = scanner.nextLine();
+        switch(room) {
+            case "S":
+                System.out.println("aaa");
+                break;
+            default:
+                System.out.println("ss");
+                break;
+        }
+    }
+
+    private void checkAvailability(Room[] roomArray) {
 
 
     }

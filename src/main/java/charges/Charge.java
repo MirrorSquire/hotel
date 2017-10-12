@@ -1,13 +1,18 @@
 package charges;
 
+import lombok.Getter;
 import rooms.Room;
 
 public class Charge {
 
-    private final static double tax = 1.2;
+    private final double tax = 1.2;
+    @Getter private double costBeforeTax;
+    @Getter private double costAfterTax;
 
-    public double getCharge(Room room) {
+    public Charge(Room room, int numOfNights){
 
-        return room.getRoomCost() * tax;
+        costBeforeTax = room.getRoomCost() * numOfNights;
+        costAfterTax = costBeforeTax * tax;
     }
+
 }

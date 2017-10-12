@@ -6,6 +6,5 @@ public class StandardRoom extends Room {
 
         roomCost = 50;
         wiFi = false;
-        available = true;
     }
 }

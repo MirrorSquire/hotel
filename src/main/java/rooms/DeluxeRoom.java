@@ -6,7 +6,6 @@ public class DeluxeRoom extends Room {
 
         roomCost = 100;
         wiFi = true;
-        available = true;
     }
 
 

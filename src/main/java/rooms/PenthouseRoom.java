@@ -6,6 +6,5 @@ public class PenthouseRoom extends Room {
 
         roomCost = 150;
         wiFi = true;
-        available = true;
     }
 }

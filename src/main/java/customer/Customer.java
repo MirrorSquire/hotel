@@ -19,4 +19,9 @@ public class Customer {
         this.name = name;
         this.email = email;
     }
+
+    public void addToBookings(Booking booking) {
+
+        bookings.add(booking);
+    }
 }

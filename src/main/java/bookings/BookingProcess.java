@@ -13,28 +13,35 @@ import rooms.PenthouseRoom;
 import rooms.Room;
 import rooms.StandardRoom;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
 public class BookingProcess {
 
 
     private final Scanner scanner = new Scanner(System.in);
     private final String NEW_KEYWORD = "new";
-    private CustomerList customers = new CustomerList();
 
-    private StandardRoom[] standardRooms = new StandardRoom[10];
-    private DeluxeRoom[] deluxeRooms = new DeluxeRoom[5];
-    private PenthouseRoom[] penthouseRooms = new PenthouseRoom[2];
+    private CustomerList customers;
 
-    private final String universalRegex = "[E]";
+    private List<StandardRoom> standardRooms;
+    private List<DeluxeRoom> deluxeRooms;
+    private List<PenthouseRoom> penthouseRooms;
+
     private final String roomSelectionRegex = "[SDP]";
 
+    public BookingProcess(CustomerList customers, List<StandardRoom> standardRooms, List<DeluxeRoom> deluxeRooms, List<PenthouseRoom> penthouseRooms) {
 
+        this.customers = customers;
+        this.standardRooms = standardRooms;
+        this.deluxeRooms = deluxeRooms;
+        this.penthouseRooms = penthouseRooms;
+    }
 
     public void start() {
 
         Customer customer = login();
-        Room room = findAvailableRoom(customer);
+        findAvailableRoom(customer);
     }
 
     public Customer login() {
@@ -84,12 +91,14 @@ public class BookingProcess {
 
             String input = scanner.nextLine();
 
-            if(!input.matches(roomSelectionRegex) || !input.matches(universalRegex)) {
+            checkForExit(input);
+
+            if(!input.matches(roomSelectionRegex)) {
 
                 System.out.println("That is not a valid option. Please try again");
                 continue;
             }
-            checkForExit(input);
+
 
             System.out.println("Please enter your check in date in the format YYYY/MM/DD");
 
@@ -112,17 +121,18 @@ public class BookingProcess {
             }
 
             Room room = null;
+            List<LocalDate> dates = datesToList(checkIn, checkOut);
 
             switch (input) {
 
                 case "S":
-                    room = checkAvailability(standardRooms, checkIn, checkOut);
+                    room = checkAvailability(standardRooms, dates);
                     break;
                 case "D":
-                    room = checkAvailability(deluxeRooms, checkIn, checkOut);
+                    room = checkAvailability(deluxeRooms, dates);
                     break;
                 case "P":
-                    room = checkAvailability(penthouseRooms, checkIn, checkOut);
+                    room = checkAvailability(penthouseRooms, dates);
                     break;
             }
 
@@ -133,7 +143,6 @@ public class BookingProcess {
             }
 
             System.out.println("The room you requested is available for those dates.");
-            bookRoom(room, checkIn, checkOut);
 
             Charge charge = new Charge(room, Days.daysBetween(checkIn, checkOut).getDays());
 
@@ -143,50 +152,26 @@ public class BookingProcess {
             System.out.println("To return to the main screen, type M. To continue with this booking, enter any other key.");
 
             input = scanner.nextLine();
-            if(input.equals("M"))
-                break;
 
-           // Booking booking = new Booking();
+            if(input.equals("M"))
+                continue;
+
+            Booking booking = new Booking(charge, room, dates);
 
             return room;
         }
-
-        return null;
     }
 
-    private void bookRoom(Room room, LocalDate checkIn, LocalDate checkOut) {
+    private Room checkAvailability(List<? extends Room> roomList, List<LocalDate> dates) {
 
+        for(Room room : roomList) {
 
-    }
-
-    private Room checkAvailability(Room[] roomArray, LocalDate checkIn, LocalDate checkOut) {
-
-        for(Room room : roomArray) {
-
-            room.checkAvailabilityForDate(checkIn, checkOut);
-            boolean isAvailable = room.checkAvailabilityForDate(checkIn, checkOut);
+            boolean isAvailable = room.checkAvailabilityForDate(dates);
 
             if(isAvailable)
                 return room;
         }
 
         return null;
-    }
-
-    private void checkForExit(String input) {
-
-        if(input.matches(universalRegex))
-            SystemManagement.exit();
-    }
-
-    private LocalDate convertDate(String date) {
-
-        DateTimeFormatter f = DateTimeFormat.forPattern("yyyy/MM/dd");
-
-        try {
-            return f.parseLocalDate(date);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
     }
 }

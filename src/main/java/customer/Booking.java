@@ -10,15 +10,14 @@ import java.util.List;
 
 public class Booking {
 
-    @Getter @Setter private Charge charge;
-    @Getter @Setter private Room room;
-    @Getter @Setter private List<LocalDate> dates;
+    @Getter private Charge charge;
+    @Getter private Room room;
+    @Getter private List<LocalDate> dates;
 
-    public Booking(Charge charge, Room room, LocalDate checkIn, LocalDate checkOut) {
+    public Booking(Charge charge, Room room, List<LocalDate> dates) {
 
         this.charge = charge;
         this.room = room;
-        for(LocalDate date = checkIn; date.isBefore(checkOut); date.plusDays(1))
-            dates.add(date);
+        this.dates = dates;
     }
 }

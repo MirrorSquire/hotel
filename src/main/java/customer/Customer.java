@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import rooms.Room;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
@@ -18,6 +19,7 @@ public class Customer {
 
         this.name = name;
         this.email = email;
+        bookings = new ArrayList<>();
     }
 
     public void addToBookings(Booking booking) {

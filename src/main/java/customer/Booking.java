@@ -2,7 +2,6 @@ package customer;
 
 import charges.Charge;
 import lombok.Getter;
-import lombok.Setter;
 import org.joda.time.LocalDate;
 import rooms.Room;
 
